@@ -9,12 +9,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.jetpokedexapp.data.viewmodel.PokemonDetailViewModel
 import com.example.jetpokedexapp.data.viewmodel.PokemonListViewModel
+import com.example.jetpokedexapp.ui.screen.detail.DetailScreen
 import com.example.jetpokedexapp.ui.screen.home.HomeScreen
+import java.util.Locale
 
 @Composable
 fun Navigation() {
     val viewModel = hiltViewModel<PokemonListViewModel>()
+    val detailViewModel = hiltViewModel<PokemonDetailViewModel>()
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
@@ -37,6 +41,12 @@ fun Navigation() {
             val pokemonName = remember {
                 it.arguments?.getString("pokemonName")
             }
+            DetailScreen(
+                dominantColor = dominantColor!!,
+                pokemonName = pokemonName?.toLowerCase(Locale.ROOT) ?: "",
+                navController = navController,
+                viewModel = detailViewModel
+            )
         }
     }
 
