@@ -81,8 +81,10 @@ fun HomeScreen(
             )
             Searchbar(
                 value = searchBarText,
-                onValueChange = { searchBarText = it },
-                onSearch = {})
+                onValueChange = {
+                    searchBarText = it
+                                viewModel.searchPokemonList(searchBarText)},
+                )
             Spacer(modifier = Modifier.height(16.dp))
             PokemonList(navController = navController, viewModel = viewModel)
         }
@@ -94,7 +96,6 @@ fun HomeScreen(
 fun Searchbar(
     value: String,
     onValueChange: (String) -> Unit = {},
-    onSearch: (String) -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -119,9 +120,6 @@ fun Searchbar(
                     imageVector = Icons.Default.Search,
                     contentDescription = "search",
                     modifier = Modifier
-                        .clickable {
-                            onSearch(value)
-                        }
                 )
             },
             placeholder = { Text(text = "Search...") },
@@ -140,6 +138,8 @@ fun PokemonList(
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
+    val isSearching by remember { viewModel.isSearching }
+
     LazyColumn(contentPadding = PaddingValues(16.dp)) {
         val itemCount = if (pokemonList.size % 2 == 0) {
             pokemonList.size / 2
@@ -147,7 +147,7 @@ fun PokemonList(
             pokemonList.size / 2 + 1
         }
         items(itemCount) {
-            if (it >= itemCount - 1 && !endReached) {
+            if (it >= itemCount - 1 && !endReached && !isLoading && !isSearching) {
                 viewModel.loadPokemonPaginated()
             }
             PokedexRow(
