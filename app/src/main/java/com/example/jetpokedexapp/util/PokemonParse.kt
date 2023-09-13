@@ -1,7 +1,7 @@
 package com.example.jetpokedexapp.util
 
 import androidx.compose.ui.graphics.Color
-import com.example.jetpokedexapp.data.response.Stat
+import com.example.jetpokedexapp.data.response.StatsItem
 import com.example.jetpokedexapp.data.response.TypesItem
 import com.example.jetpokedexapp.ui.theme.AtkColor
 import com.example.jetpokedexapp.ui.theme.DefColor
@@ -53,8 +53,8 @@ fun parseTypeToColor(type: TypesItem?): Color {
     }
 }
 
-fun parseStatToColor(stat: Stat): Color {
-    return when(stat.name?.toLowerCase()) {
+fun parseStatToColor(stat: StatsItem?): Color {
+    return when(stat?.stat?.name?.toLowerCase()) {
         "hp" -> HPColor
         "attack" -> AtkColor
         "defense" -> DefColor
@@ -65,8 +65,8 @@ fun parseStatToColor(stat: Stat): Color {
     }
 }
 
-fun parseStatToAbbr(stat: Stat): String {
-    return when(stat.name?.toLowerCase()) {
+fun parseStatToAbbr(stat: StatsItem?): String {
+    return when(stat?.stat?.name?.toLowerCase()) {
         "hp" -> "HP"
         "attack" -> "Atk"
         "defense" -> "Def"
